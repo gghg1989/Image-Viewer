@@ -235,31 +235,28 @@
 
         });
 
-        function zoomImg(o, e) {
-            //document.write(e.originalEvent.wheelDelta + ":" + e.originalEvent.detail + "<br/>");
-            var delta = (e.originalEvent.wheelDelta < 0 || e.originalEvent.detail > 0) ? 1 : -1;
-
+        function zoomImg(event) {
+            event.preventDefault();
+			
+            offsetX = event.pageX - parseInt(theImage.style.left);
+            offsetY = event.pageY - parseInt(theImage.style.top);
+			
+            var delta = (event.wheelDelta < 0 || event.detail > 0) ? 1 : -1;
             //	var delta = e.detail < 0 || e.wheelDelta > 0 ? 1 : -1;
             var zoom = (delta < 0) ? 1.1 : 0.9;
             //	var zoom=(event.wheelDelta>0)?1.1:0.9;
             //	var zoom = (e.originalEvent.wheelDelta /120 > 0) ?1.1:0.9;
-            o.style.left = Math.round(e.originalEvent.pageX - offsetX * zoom) + 'px';
-            o.style.top = Math.round(e.originalEvent.pageY - offsetY * zoom) + 'px';
+            theImage.style.left = Math.round(event.pageX - offsetX * zoom) + 'px';
+            theImage.style.top = Math.round(event.pageY - offsetY * zoom) + 'px';
 
-            o.style.width = parseInt(o.style.width) * zoom + "px";
-            o.style.height = parseInt(o.style.width) * sizeRatio + "px";
-        }
-
-        $("#pic").bind("mousewheel DOMMouseScroll", function (e) {
-
-            //offsetX = e.pageX- parseInt(this.style.left);
-            //offsetY = e.pageY-parseInt(this.style.top); 
-            //document.write(e.originalEvent.pageX + " : " + e.originalEvent.clientX + "<br/>");
-            offsetX = e.originalEvent.pageX - parseInt(this.style.left);
-            offsetY = e.originalEvent.pageY - parseInt(this.style.top);
-            zoomImg(this, e);
-            return false;
-        });
+            theImage.style.width = parseInt(theImage.style.width) * zoom + "px";
+            theImage.style.height = parseInt(theImage.style.width) * sizeRatio + "px";
+         }
+     
+     		theImage.addEventListener("mousewheel", function(event) {zoomImg(event)});
+     
+     		theImage.addEventListener("DOMMouseScroll", function(event) {zoomImg(event)});
+     		
        $("#pic").draggable();
     }
 }(jQuery));

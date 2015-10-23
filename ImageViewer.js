@@ -1,9 +1,21 @@
-/*!
- * JQuery ImageViewer Plugin 1.1.1
- * Copyright (C) 2014-2015 Yuzhou Feng <http://eternalcat.com>
+"use strict";
+
+/**
+ * <h3>JQuery ImageViewer Plugin 1.1.1</h3>
+ * Copyright (C) 2014-2015 Aaron Feng <http://eternalcat.com>
+ * <br/>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <br/>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- *Usage: $("#").imageViewer(imgURL);
+ * Usage: $("#").imageViewer(imgURL);
  */
+ 
 (function ($) {
     var offsetX, offsetY;
     var distance1, distance2;

@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * <h3>JQuery ImageViewer Plugin 1.1.1</h3>
  * Copyright (C) 2014-2015 Aaron Feng <http://eternalcat.com>

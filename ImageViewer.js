@@ -1,5 +1,5 @@
 /**
- * <h3>JQuery ImageViewer Plugin 1.1.1</h3>
+ * <h3>JQuery ImageViewer Plugin 1.2 </h3>
  * Copyright (C) 2014-2015 Aaron Feng <http://eternalcat.com>
  * <br/>
  * This program is free software: you can redistribute it and/or modify
@@ -62,7 +62,7 @@
     var sizeRatio;
     //var zoomLevel=1;
 
-    $.fn.imageViewer = function (options) {
+    $.fn.imageViewer1 = function (options) {
         var imageViewer = $(this);
         this.css("overflow","hidden").css("position","relative");
         this.empty();
@@ -93,8 +93,8 @@
 
         var theImage = document.getElementById('pic');
 
-        currentOffsetX = theImage.offsetLeft;
-        currentOffsetY = theImage.offsetTop;
+        currentOffsetX = theImage.offsetLeft; //Returns the horizontal offset position 
+        currentOffsetY = theImage.offsetTop;  //Returns the vertical offset position
 
         $("#zoomIn").bind("mousedown", function (e) {
             //zoomLevel *= 1.1;
@@ -122,7 +122,7 @@
             theImage.style.height = currentHeight + "px";
             //$("#zoomLevel").val(parseInt(zoomLevel*100)+"%");
         });
-        //.css("z-index", "1000").css("position", "absolute");
+        //.css("z-index", "1000").css("position", "absolute"); 
 
         $("#zoomReset").bind("mousedown", function (e) {
             currentOffsetX = 0;
@@ -134,7 +134,7 @@
             theImage.style.width = currentWidth + "px";
             theImage.style.height = currentHeight + "px";
             //this.val("100%");
-        });
+        }); 
 
         theImage.addEventListener('touchstart', function (event) {
             panning = false;
@@ -185,9 +185,9 @@
                 // Calculate current distance between points to get new-to-old pinch ratio and calc width and height
                 endDistanceBetweenFingers = Math.sqrt(Math.pow((endX1 - endX0), 2) + Math.pow((endY1 - endY0), 2));
                 pinchRatio = endDistanceBetweenFingers / startDistanceBetweenFingers;
-                newContinuousZoom = pinchRatio * currentContinuousZoom;
-                newWidth = imgWidth * newContinuousZoom;
-                newHeight = imgHeight * newContinuousZoom;
+                newContinuousZoom = pinchRatio; //* currentContinuousZoom;
+                newWidth = currentWidth * newContinuousZoom;
+                newHeight = currentHeight * newContinuousZoom;
                 // Get the point between the two touches, relative to upper-left corner of image
                 centerPointEndX = ((endX0 + endX1) / 2.0);
                 centerPointEndY = ((endY0 + endY1) / 2.0);
@@ -207,7 +207,7 @@
                 // the new offset is the old/current one plus the total translation component
                 newOffsetX = currentOffsetX + translateTotalX;
                 newOffsetY = currentOffsetY + translateTotalY;
-                //Log("pos:" + percentageOfImageAtPinchPointX + ":" + percentageOfImageAtPinchPointY);
+                // Log("pos:" + percentageOfImageAtPinchPointX + ":" + percentageOfImageAtPinchPointY);
                 // Set the image attributes on the page
                 theImage.style.left = newOffsetX + "px";
                 theImage.style.top = newOffsetY + "px";
@@ -228,7 +228,8 @@
                 currentOffsetY = newOffsetY;
                 currentWidth = newWidth;
                 currentHeight = newHeight;
-                currentContinuousZoom = newContinuousZoom;
+				
+                //currentContinuousZoom = newContinuousZoom;
             }
 
         });
@@ -251,9 +252,9 @@
             theImage.style.height = parseInt(theImage.style.width) * sizeRatio + "px";
          }
      
-     		theImage.addEventListener("mousewheel", function(event) {zoomImg(event)});
+     	theImage.addEventListener("mousewheel", function(event) {zoomImg(event)});
      
-     		theImage.addEventListener("DOMMouseScroll", function(event) {zoomImg(event)});
+     	theImage.addEventListener("DOMMouseScroll", function(event) {zoomImg(event)});
      		
        $("#pic").draggable();
     }

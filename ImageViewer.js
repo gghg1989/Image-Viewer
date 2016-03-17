@@ -1,5 +1,5 @@
 /**
- * <h3>JQuery ImageViewer Plugin 1.2 </h3>
+ * <h3>JQuery ImageViewer Plugin 1.2.1</h3>
  * Copyright (C) 2014-2015 Aaron Feng <http://eternalcat.com>
  * <br/>
  * This program is free software: you can redistribute it and/or modify
@@ -250,12 +250,58 @@
 
             theImage.style.width = parseInt(theImage.style.width) * zoom + "px";
             theImage.style.height = parseInt(theImage.style.width) * sizeRatio + "px";
-         }
-     
+        }
+		 
      	theImage.addEventListener("mousewheel", function(event) {zoomImg(event)});
      
      	theImage.addEventListener("DOMMouseScroll", function(event) {zoomImg(event)});
+		
+		var dragged;
+		var dragFlag = false;
+		theImage.addEventListener("mousedown", function(event) {
+			// Avoiding the events which comes from the browser itself
+			event.preventDefault();
+			
+			startX0 = event.pageX;
+			startY0 = event.pageY;
+			
+			dragFlag = true;
+			
+			// store a ref. on the dragged elem
+			dragged = event.target;
+			// make it half transparent
+			dragged.style.opacity = .5;	
+		}, false);
+		
+		theImage.addEventListener("mousemove", function(event) {
+			
+			//console.log(event.pageX + ":" + event.pageY);
+			if (dragFlag) {
+				console.log(event.pageX + ":" + event.pageY);
+				endX0 = event.pageX;
+                endY0 = event.pageY;
+                translateFromTranslatingX = endX0 - startX0;
+                translateFromTranslatingY = endY0 - startY0;
+                newOffsetX = currentOffsetX + translateFromTranslatingX;
+                newOffsetY = currentOffsetY + translateFromTranslatingY;
+                theImage.style.left = newOffsetX + "px";
+                theImage.style.top = newOffsetY + "px";
+			}
+		}, false);
+		
+		theImage.addEventListener("mouseup", function(event) { mouseUp();}, false);
+		
+		theImage.addEventListener("mouseout", function(event) { mouseUp();}, false);
+		
+		function mouseUp() {
+			currentOffsetX = newOffsetX;
+			currentOffsetY = newOffsetY;
+			
+			dragFlag = false;
+			// reset the transparency
+			event.target.style.opacity = "";
+		}
      		
-       $("#pic").draggable();
+        //$("#pic").draggable();
     }
 }(jQuery));

@@ -62,7 +62,7 @@
     var sizeRatio;
     //var zoomLevel=1;
 
-    $.fn.imageViewer1 = function (options) {
+    $.fn.imageViewer = function (options) {
         var imageViewer = $(this);
         this.css("overflow","hidden").css("position","relative");
         this.empty();

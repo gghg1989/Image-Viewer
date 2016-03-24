@@ -1,5 +1,5 @@
 /**
- * <h3>JQuery ImageViewer Plugin 1.2.1</h3>
+ * <h3>JQuery ImageViewer Plugin 1.2.2</h3>
  * Copyright (C) 2014-2015 Aaron Feng <http://eternalcat.com>
  * <br/>
  * This program is free software: you can redistribute it and/or modify
@@ -234,6 +234,7 @@
 
         });
 
+		
         function zoomImg(event) {
             event.preventDefault();
 			
@@ -245,11 +246,17 @@
             var zoom = (delta < 0) ? 1.1 : 0.9;
             //	var zoom=(event.wheelDelta>0)?1.1:0.9;
             //	var zoom = (e.originalEvent.wheelDelta /120 > 0) ?1.1:0.9;
-            theImage.style.left = Math.round(event.pageX - offsetX * zoom) + 'px';
-            theImage.style.top = Math.round(event.pageY - offsetY * zoom) + 'px';
-
+			
+            currentOffsetX = Math.round(event.pageX - offsetX * zoom);
+            currentOffsetY = Math.round(event.pageY - offsetY * zoom);
+			
+			theImage.style.left = currentOffsetX + "px";
+            theImage.style.top = currentOffsetY + "px";
+			
             theImage.style.width = parseInt(theImage.style.width) * zoom + "px";
             theImage.style.height = parseInt(theImage.style.width) * sizeRatio + "px";
+			
+		
         }
 		 
      	theImage.addEventListener("mousewheel", function(event) {zoomImg(event)});
@@ -291,6 +298,7 @@
 		
 		theImage.addEventListener("mouseup", function(event) { mouseUp();}, false);
 		
+		// deal with the problem when mouse point is out side the window
 		theImage.addEventListener("mouseout", function(event) { mouseUp();}, false);
 		
 		function mouseUp() {

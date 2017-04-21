@@ -1,0 +1,23 @@
+{
+  "name": "image-viewer",
+  "homepage": "https://github.com/gghg1989/Image-Viewer",
+  "description": "A web image viewer jQuery plugin for desktops and phones",
+  "main": "ImageViewer.js",
+  "keywords": [
+    "image",
+    "viewer",
+    "zoom",
+    "touch"
+  ],
+  "authors": [
+    "Yuzhou Feng"
+  ],
+  "license": "GNU",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

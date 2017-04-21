@@ -1,6 +1,6 @@
 /**
  * <h3>JQuery ImageViewer Plugin 1.2.2</h3>
- * Copyright (C) 2014-2015 Aaron Feng <http://eternalcat.com>
+ * Copyright (C) 2014-2017 Yuzhou Feng <http://eternalcat.com>
  * <br/>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by

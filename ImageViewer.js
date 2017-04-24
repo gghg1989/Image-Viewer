@@ -79,8 +79,6 @@
         }
         img.onload = function () {
             sizeRatio = img.height / img.width;
-            //img.height = parseInt(imageViewer.css("height"));
-            //img.width = img.height / sizeRatio;
             if( parseInt(imageViewer.css("width")) != 0 ) {
                 img.width = parseInt(imageViewer.css("width"));
                 img.height = img.width * sizeRatio;

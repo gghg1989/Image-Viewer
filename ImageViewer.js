@@ -286,8 +286,6 @@
         }, false);
         
         theImage.addEventListener("mousemove", function(event) {
-            
-            //console.log(event.pageX + ":" + event.pageY);
             if (dragFlag) {
                 // console.log(event.pageX + ":" + event.pageY);
                 endX0 = event.pageX;

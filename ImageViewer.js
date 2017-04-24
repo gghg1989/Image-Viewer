@@ -1,5 +1,5 @@
 /**
- * <h3>JQuery ImageViewer Plugin 1.2.2</h3>
+ * <h3>JQuery ImageViewer Plugin 1.2.3</h3>
  * Copyright (C) 2014-2017 Yuzhou Feng <http://eternalcat.com>
  * <br/>
  * This program is free software: you can redistribute it and/or modify

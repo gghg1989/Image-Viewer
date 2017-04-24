@@ -81,8 +81,15 @@
             sizeRatio = img.height / img.width;
             //img.height = parseInt(imageViewer.css("height"));
             //img.width = img.height / sizeRatio;
-            img.width = parseInt(imageViewer.css("width"));
-            img.height = img.width * sizeRatio;
+            if( parseInt(imageViewer.css("width")) != 0 ) {
+                img.width = parseInt(imageViewer.css("width"));
+                img.height = img.width * sizeRatio;
+            }
+            else if ( parseInt(imageViewer.css("height"))  != 0 ) {
+                img.height = parseInt(imageViewer.css("height"));
+                img.width = img.height / sizeRatio;
+            }
+            
             imgWidth = img.width;
             imgHeight = img.height;
             currentWidth = imgWidth;
@@ -228,64 +235,64 @@
                 currentOffsetY = newOffsetY;
                 currentWidth = newWidth;
                 currentHeight = newHeight;
-				
+                
                 //currentContinuousZoom = newContinuousZoom;
             }
 
         });
 
-		
+        
         function zoomImg(event) {
             event.preventDefault();
-			
+            
             offsetX = event.pageX - parseInt(theImage.style.left);
             offsetY = event.pageY - parseInt(theImage.style.top);
-			
+            
             var delta = (event.wheelDelta < 0 || event.detail > 0) ? 1 : -1;
-            //	var delta = e.detail < 0 || e.wheelDelta > 0 ? 1 : -1;
+            //  var delta = e.detail < 0 || e.wheelDelta > 0 ? 1 : -1;
             var zoom = (delta < 0) ? 1.1 : 0.9;
-            //	var zoom=(event.wheelDelta>0)?1.1:0.9;
-            //	var zoom = (e.originalEvent.wheelDelta /120 > 0) ?1.1:0.9;
-			
+            //  var zoom=(event.wheelDelta>0)?1.1:0.9;
+            //  var zoom = (e.originalEvent.wheelDelta /120 > 0) ?1.1:0.9;
+            
             currentOffsetX = Math.round(event.pageX - offsetX * zoom);
             currentOffsetY = Math.round(event.pageY - offsetY * zoom);
-			
-			theImage.style.left = currentOffsetX + "px";
+            
+            theImage.style.left = currentOffsetX + "px";
             theImage.style.top = currentOffsetY + "px";
-			
+            
             theImage.style.width = parseInt(theImage.style.width) * zoom + "px";
             theImage.style.height = parseInt(theImage.style.width) * sizeRatio + "px";
-			
-		
+            
+        
         }
-		 
-     	theImage.addEventListener("mousewheel", function(event) {zoomImg(event)});
+         
+        theImage.addEventListener("mousewheel", function(event) {zoomImg(event)});
      
-     	theImage.addEventListener("DOMMouseScroll", function(event) {zoomImg(event)});
-		
-		var dragged;
-		var dragFlag = false;
-		theImage.addEventListener("mousedown", function(event) {
-			// Avoiding the events which comes from the browser itself
-			event.preventDefault();
-			
-			startX0 = event.pageX;
-			startY0 = event.pageY;
-			
-			dragFlag = true;
-			
-			// store a ref. on the dragged elem
-			dragged = event.target;
-			// make it half transparent
-			dragged.style.opacity = .5;	
-		}, false);
-		
-		theImage.addEventListener("mousemove", function(event) {
-			
-			//console.log(event.pageX + ":" + event.pageY);
-			if (dragFlag) {
-				console.log(event.pageX + ":" + event.pageY);
-				endX0 = event.pageX;
+        theImage.addEventListener("DOMMouseScroll", function(event) {zoomImg(event)});
+        
+        var dragged;
+        var dragFlag = false;
+        theImage.addEventListener("mousedown", function(event) {
+            // Avoiding the events which comes from the browser itself
+            event.preventDefault();
+            
+            startX0 = event.pageX;
+            startY0 = event.pageY;
+            
+            dragFlag = true;
+            
+            // store a ref. on the dragged elem
+            dragged = event.target;
+            // make it half transparent
+            dragged.style.opacity = .5; 
+        }, false);
+        
+        theImage.addEventListener("mousemove", function(event) {
+            
+            //console.log(event.pageX + ":" + event.pageY);
+            if (dragFlag) {
+                // console.log(event.pageX + ":" + event.pageY);
+                endX0 = event.pageX;
                 endY0 = event.pageY;
                 translateFromTranslatingX = endX0 - startX0;
                 translateFromTranslatingY = endY0 - startY0;
@@ -293,23 +300,23 @@
                 newOffsetY = currentOffsetY + translateFromTranslatingY;
                 theImage.style.left = newOffsetX + "px";
                 theImage.style.top = newOffsetY + "px";
-			}
-		}, false);
-		
-		theImage.addEventListener("mouseup", function(event) { mouseUp();}, false);
-		
-		// deal with the problem when mouse point is out side the window
-		theImage.addEventListener("mouseout", function(event) { mouseUp();}, false);
-		
-		function mouseUp() {
-			currentOffsetX = newOffsetX;
-			currentOffsetY = newOffsetY;
-			
-			dragFlag = false;
-			// reset the transparency
-			event.target.style.opacity = "";
-		}
-     		
+            }
+        }, false);
+        
+        theImage.addEventListener("mouseup", function(event) { mouseUp();}, false);
+        
+        // deal with the problem when mouse point is out side the window
+        theImage.addEventListener("mouseout", function(event) { mouseUp();}, false);
+        
+        function mouseUp() {
+            currentOffsetX = newOffsetX;
+            currentOffsetY = newOffsetY;
+            
+            dragFlag = false;
+            // reset the transparency
+            event.target.style.opacity = "";
+        }
+            
         //$("#pic").draggable();
     }
 }(jQuery));

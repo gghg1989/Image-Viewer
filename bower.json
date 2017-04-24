@@ -9,7 +9,8 @@
     "viewer",
     "zoom",
     "javascript",
-    "library"
+    "library",
+    "jQuery"
   ],
   "authors": [
     "Yuzhou Feng"

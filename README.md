@@ -1,4 +1,4 @@
-# Image-Viewer v1.2.3
+# Image-Viewer v1.2.4
 A web image viewer jQuery plugin for desktops and phones.
 
 ## Getting Started

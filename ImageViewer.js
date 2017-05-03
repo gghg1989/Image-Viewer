@@ -1,5 +1,5 @@
 /**
- * <h3>JQuery ImageViewer Plugin 1.2.3</h3>
+ * <h3>JQuery ImageViewer Plugin 1.2.4</h3>
  * Copyright (C) 2014-2017 Yuzhou Feng <http://eternalcat.com>
  * <br/>
  * This program is free software: you can redistribute it and/or modify
@@ -16,6 +16,7 @@
  
 (function ($) {
     var offsetX, offsetY;
+    var offsetW, offsetH;
     var distance1, distance2;
     var panning = false;
     var zooming = false;
@@ -64,6 +65,7 @@
 
     $.fn.imageViewer = function (options) {
         var imageViewer = $(this);
+
         this.css("overflow","hidden").css("position","relative");
         this.empty();
         theImageTag = "<img id='pic' style='position:absolute;left:0px;top:0px;'></div>";
@@ -75,29 +77,37 @@
         if (options) {
             img.src = options;
         } else {
-            img.src = "altamarker1.png";
+            img.src = "./property.jpg";
         }
         img.onload = function () {
-            sizeRatio = img.height / img.width;
-            if( parseInt(imageViewer.css("width")) != 0 ) {
-                img.width = parseInt(imageViewer.css("width"));
+            setTimeout(function(){ //TEMP solution for cannot get plugin width bug
+                offsetW = imageViewer.width();
+                offsetH = imageViewer.height();
+                sizeRatio = img.height / img.width;
+                img.width = offsetW;
                 img.height = img.width * sizeRatio;
-            }
-            else if ( parseInt(imageViewer.css("height"))  != 0 ) {
-                img.height = parseInt(imageViewer.css("height"));
-                img.width = img.height / sizeRatio;
-            }
-            
-            imgWidth = img.width;
-            imgHeight = img.height;
-            currentWidth = imgWidth;
-            currentHeight = imgHeight;
+                
+                //img.width = img.height / sizeRatio;
+                // if( parseInt(imageViewer.css("width")) != 0 ) {
+                //     img.width = parseInt(imageViewer.css("width"));
+                //     img.height = img.width * sizeRatio;
+                // }
+                // else if ( parseInt(imageViewer.css("height"))  != 0 ) {
+                //     img.height = parseInt(imageViewer.css("height"));
+                //     img.width = img.height / sizeRatio;
+                // }
+                
+                imgWidth = img.width;
+                imgHeight = img.height;
+                currentWidth = imgWidth;
+                currentHeight = imgHeight;
 
-            $("#pic").css("width", img.width).css("height", img.height).css("z-index","1").attr("src", img.src);
+                $("#pic").css("width", img.width).css("height", img.height).css("z-index","1").attr("src", img.src);
+            },200);
         };
 
         var theImage = document.getElementById('pic');
-
+        
         currentOffsetX = theImage.offsetLeft; //Returns the horizontal offset position 
         currentOffsetY = theImage.offsetTop;  //Returns the vertical offset position
 
@@ -286,6 +296,8 @@
         }, false);
         
         theImage.addEventListener("mousemove", function(event) {
+            
+            //console.log(event.pageX + ":" + event.pageY);
             if (dragFlag) {
                 // console.log(event.pageX + ":" + event.pageY);
                 endX0 = event.pageX;

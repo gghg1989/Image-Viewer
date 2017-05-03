@@ -1,5 +1,5 @@
 /**
- * <h3>JQuery ImageViewer Plugin 1.2.4</h3>
+ * <h3>JQuery ImageViewer Plugin 1.3.1</h3>
  * Copyright (C) 2014-2017 Yuzhou Feng <http://eternalcat.com>
  * <br/>
  * This program is free software: you can redistribute it and/or modify
@@ -61,6 +61,8 @@
     var percentageOfImageAtPinchPointY;
 
     var sizeRatio;
+    var dragLock = false;
+    var viewerX, viewerY;
     //var zoomLevel=1;
 
     $.fn.imageViewer = function (options) {
@@ -83,9 +85,15 @@
             setTimeout(function(){ //TEMP solution for cannot get plugin width bug
                 offsetW = imageViewer.width();
                 offsetH = imageViewer.height();
+                // viewerX = imageViewer.offset().left;
+                // viewerY = imageViewer.offset().top;
+
                 sizeRatio = img.height / img.width;
                 img.width = offsetW;
                 img.height = img.width * sizeRatio;
+
+                currentOffsetX = Math.round((offsetW  - img.width) / 2);
+                currentOffsetY = Math.round((offsetH  - img.height) / 2);
                 
                 //img.width = img.height / sizeRatio;
                 // if( parseInt(imageViewer.css("width")) != 0 ) {
@@ -102,7 +110,12 @@
                 currentWidth = imgWidth;
                 currentHeight = imgHeight;
 
-                $("#pic").css("width", img.width).css("height", img.height).css("z-index","1").attr("src", img.src);
+                $("#pic").css("width", img.width)
+                    .css("height", img.height)
+                    .css("left", currentOffsetX+"px")
+                    .css("top", currentOffsetY+"px")
+                    .css("z-index","1")
+                    .attr("src", img.src);
             },200);
         };
 
@@ -110,6 +123,21 @@
         
         currentOffsetX = theImage.offsetLeft; //Returns the horizontal offset position 
         currentOffsetY = theImage.offsetTop;  //Returns the vertical offset position
+
+        // Check image size, if smaller than viewer
+        var checkSize = function() {
+            if(parseInt(theImage.style.width) <= offsetW || parseInt(theImage.style.width) <= offsetH) {
+                dragLock = true;
+                currentOffsetX = Math.round((offsetW  - parseInt(theImage.style.width)) / 2);
+                currentOffsetY = Math.round((offsetH  - parseInt(theImage.style.height)) / 2);
+                
+                theImage.style.left = currentOffsetX + "px";
+                theImage.style.top = currentOffsetY + "px";
+            }
+            else {
+                dragLock = false;
+            }
+        }
 
         $("#zoomIn").bind("mousedown", function (e) {
             //zoomLevel *= 1.1;
@@ -121,6 +149,7 @@
             theImage.style.top = currentOffsetY + "px";
             theImage.style.width = currentWidth + "px";
             theImage.style.height = currentHeight + "px";
+            checkSize();
             //$("#zoomLevel").val(parseInt(zoomLevel * 100) + "%");
         });
         //.css("z-index","1000").css("position","absolute");
@@ -135,15 +164,16 @@
             theImage.style.top = currentOffsetY + "px";
             theImage.style.width = currentWidth + "px";
             theImage.style.height = currentHeight + "px";
+            checkSize();
             //$("#zoomLevel").val(parseInt(zoomLevel*100)+"%");
         });
         //.css("z-index", "1000").css("position", "absolute"); 
 
         $("#zoomReset").bind("mousedown", function (e) {
-            currentOffsetX = 0;
-            currentOffsetY = 0;
             currentWidth = imgWidth;
             currentHeight = imgHeight;
+            currentOffsetX = Math.round((offsetW  - parseInt(theImage.style.width)) / 2);
+            currentOffsetY = Math.round((offsetH  - parseInt(theImage.style.height)) / 2);
             theImage.style.left = currentOffsetX + "px";
             theImage.style.top = currentOffsetY + "px";
             theImage.style.width = currentWidth + "px";
@@ -261,7 +291,6 @@
             var zoom = (delta < 0) ? 1.1 : 0.9;
             //  var zoom=(event.wheelDelta>0)?1.1:0.9;
             //  var zoom = (e.originalEvent.wheelDelta /120 > 0) ?1.1:0.9;
-            
             currentOffsetX = Math.round(event.pageX - offsetX * zoom);
             currentOffsetY = Math.round(event.pageY - offsetY * zoom);
             
@@ -271,6 +300,17 @@
             theImage.style.width = parseInt(theImage.style.width) * zoom + "px";
             theImage.style.height = parseInt(theImage.style.width) * sizeRatio + "px";
             
+            if(parseInt(theImage.style.width) <= offsetW || parseInt(theImage.style.width) <= offsetH) {
+                dragLock = true;
+                currentOffsetX = Math.round((offsetW  - parseInt(theImage.style.width)) / 2);
+                currentOffsetY = Math.round((offsetH  - parseInt(theImage.style.height)) / 2);
+                
+                theImage.style.left = currentOffsetX + "px";
+                theImage.style.top = currentOffsetY + "px";
+            }
+            else {
+                dragLock = false;
+            }
         
         }
          
@@ -281,6 +321,8 @@
         var dragged;
         var dragFlag = false;
         theImage.addEventListener("mousedown", function(event) {
+            if(dragLock) return;
+
             // Avoiding the events which comes from the browser itself
             event.preventDefault();
             
@@ -296,7 +338,7 @@
         }, false);
         
         theImage.addEventListener("mousemove", function(event) {
-            
+            if(dragLock) return;
             //console.log(event.pageX + ":" + event.pageY);
             if (dragFlag) {
                 // console.log(event.pageX + ":" + event.pageY);
@@ -317,6 +359,7 @@
         theImage.addEventListener("mouseout", function(event) { mouseUp();}, false);
         
         function mouseUp() {
+            if(dragLock) return;
             currentOffsetX = newOffsetX;
             currentOffsetY = newOffsetY;
             

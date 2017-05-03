@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>image viewer</title>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> 
+<script src="libs/jquery-ui.min.js"></script> 
+
+<script src="ImageViewer.js"></script>
+<script type="text/javascript">
+    $(function () {
+        //$("#imageContainer").imageViewer();
+        src = "http://weknowyourdreams.com/images/cat/cat-04.jpg";
+        $("#imageContainer").imageViewer(src);
+    });
+</script>
+<style type="text/css">
+#imageContainer {
+	width: 300px;
+	height: 400px;
+    background-color:gray;
+    border:5px dashed black;
+	margin: 100px 0 0 100px;
+}
+</style>
+</head>
+
+<body>
+<div id="imageContainer"></div>
+<div id="debug"></div>
+</body>
+</html>

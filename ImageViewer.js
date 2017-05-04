@@ -1,5 +1,5 @@
 /**
- * <h3>JQuery ImageViewer Plugin 1.3.2</h3>
+ * <h3>JQuery ImageViewer Plugin 1.3.3</h3>
  * Copyright (C) 2014-2017 Yuzhou Feng <http://eternalcat.com>
  * <br/>
  * This program is free software: you can redistribute it and/or modify
@@ -125,7 +125,8 @@
 
         // Check image size, if smaller than viewer
         var checkSize = function() {
-            if(parseInt(theImage.style.width) <= offsetW || parseInt(theImage.style.width) <= offsetH) {
+            console.log(parseInt(theImage.style.width) <= offsetW + ":" + parseInt(theImage.style.height) <= offsetH)
+            if(parseInt(theImage.style.width) <= offsetW || parseInt(theImage.style.height) <= offsetH) {
                 dragLock = true;
                 currentOffsetX = Math.round((offsetW  - parseInt(theImage.style.width)) / 2);
                 currentOffsetY = Math.round((offsetH  - parseInt(theImage.style.height)) / 2);
@@ -281,11 +282,11 @@
         
         function zoomImg(event) {
             event.preventDefault();
-            
+
             offsetX = event.pageX - parseInt(theImage.style.left);
             offsetY = event.pageY - parseInt(theImage.style.top);
             
-            var delta = (event.wheelDelta < 0 || event.detail > 0) ? 1 : -1;
+            var delta = (event.originalEvent.wheelDelta < 0 || event.originalEvent.detail > 0) ? 1 : -1;
             //  var delta = e.detail < 0 || e.wheelDelta > 0 ? 1 : -1;
             var zoom = (delta < 0) ? 1.1 : 0.9;
             //  var zoom=(event.wheelDelta>0)?1.1:0.9;
@@ -299,31 +300,24 @@
             theImage.style.width = parseInt(theImage.style.width) * zoom + "px";
             theImage.style.height = parseInt(theImage.style.width) * sizeRatio + "px";
             
-            if(parseInt(theImage.style.width) <= offsetW || parseInt(theImage.style.width) <= offsetH) {
-                dragLock = true;
-                currentOffsetX = Math.round((offsetW  - parseInt(theImage.style.width)) / 2);
-                currentOffsetY = Math.round((offsetH  - parseInt(theImage.style.height)) / 2);
-                
-                theImage.style.left = currentOffsetX + "px";
-                theImage.style.top = currentOffsetY + "px";
-            }
-            else {
-                dragLock = false;
-            }
+            checkSize();
         
         }
          
-        theImage.addEventListener("mousewheel", function(event) {zoomImg(event)});
+        // theImage.addEventListener("mousewheel", function(event) {zoomImg(event)});
      
-        theImage.addEventListener("DOMMouseScroll", function(event) {zoomImg(event)});
+        // theImage.addEventListener("DOMMouseScroll", function(event) {zoomImg(event)});
+
+        $(theImage).on("mousewheel", function(event) {zoomImg(event)})
         
         var dragged;
         var dragFlag = false;
         theImage.addEventListener("mousedown", function(event) {
-            if(dragLock) return;
 
             // Avoiding the events which comes from the browser itself
             event.preventDefault();
+
+            if(dragLock) return;
             
             startX0 = event.pageX;
             startY0 = event.pageY;

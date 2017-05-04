@@ -1,6 +1,6 @@
 {
   "name": "image-viewer",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "homepage": "https://github.com/gghg1989/Image-Viewer",
   "description": "A web image viewer jQuery plugin for desktops and phones",
   "main": "ImageViewer.js",

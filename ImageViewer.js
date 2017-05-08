@@ -1,5 +1,5 @@
 /**
- * <h3>JQuery ImageViewer Plugin 1.3.3</h3>
+ * <h3>JQuery ImageViewer Plugin 1.3.4</h3>
  * Copyright (C) 2014-2017 Yuzhou Feng <http://eternalcat.com>
  * <br/>
  * This program is free software: you can redistribute it and/or modify
@@ -61,8 +61,10 @@
     var percentageOfImageAtPinchPointY;
 
     var sizeRatio;
-    var dragLock = false;
+    var dragLock = true;
     var viewerX, viewerY;
+
+    var theImage;
 
     $.fn.imageViewer = function (options) {
         var imageViewer = $(this);
@@ -123,9 +125,11 @@
         currentOffsetX = theImage.offsetLeft; //Returns the horizontal offset position 
         currentOffsetY = theImage.offsetTop;  //Returns the vertical offset position
 
+
+
         // Check image size, if smaller than viewer
         var checkSize = function() {
-            console.log(parseInt(theImage.style.width) <= offsetW + ":" + parseInt(theImage.style.height) <= offsetH)
+            // console.log(parseInt(theImage.style.width) <= offsetW + ":" + parseInt(theImage.style.height) <= offsetH)
             if(parseInt(theImage.style.width) <= offsetW || parseInt(theImage.style.height) <= offsetH) {
                 dragLock = true;
                 currentOffsetX = Math.round((offsetW  - parseInt(theImage.style.width)) / 2);
@@ -138,6 +142,8 @@
                 dragLock = false;
             }
         }
+
+        // checkSize();
 
         $("#zoomIn").bind("mousedown", function (e) {
             //zoomLevel *= 1.1;
@@ -301,7 +307,6 @@
             theImage.style.height = parseInt(theImage.style.width) * sizeRatio + "px";
             
             checkSize();
-        
         }
          
         // theImage.addEventListener("mousewheel", function(event) {zoomImg(event)});
@@ -327,7 +332,7 @@
             // store a ref. on the dragged elem
             dragged = event.target;
             // make it half transparent
-            dragged.style.opacity = .5; 
+            // dragged.style.opacity = .5; 
         }, false);
         
         theImage.addEventListener("mousemove", function(event) {
@@ -341,6 +346,24 @@
                 translateFromTranslatingY = endY0 - startY0;
                 newOffsetX = currentOffsetX + translateFromTranslatingX;
                 newOffsetY = currentOffsetY + translateFromTranslatingY;
+                // Check image drag boundaries
+                var rightDistance = offsetW - parseInt(theImage.style.left) - parseInt(theImage.style.width);
+                var bottomDistance = offsetH - parseInt(theImage.style.top) - parseInt(theImage.style.height);
+                var rightBoundary = offsetW - parseInt(theImage.style.width);
+                var bottomBoundary = offsetH - parseInt(theImage.style.height);
+                if(newOffsetX >= 0) {
+                    newOffsetX = 0;
+                }
+                else if(newOffsetX <= rightBoundary) {
+                    newOffsetX = rightBoundary;
+                }
+                if(newOffsetY >= 0) {
+                    newOffsetY = 0;
+                }
+                else if(newOffsetY < bottomBoundary) {
+                    newOffsetY = bottomBoundary;
+                }
+                // console.log(newOffsetX + ":" + newOffsetY);
                 theImage.style.left = newOffsetX + "px";
                 theImage.style.top = newOffsetY + "px";
             }

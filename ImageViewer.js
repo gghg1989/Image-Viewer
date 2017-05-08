@@ -121,7 +121,7 @@
         };
 
         var theImage = document.getElementById('pic');
-        
+        // theImage.style.cursor = "-webkit-grab";
         currentOffsetX = theImage.offsetLeft; //Returns the horizontal offset position 
         currentOffsetY = theImage.offsetTop;  //Returns the vertical offset position
 
@@ -132,6 +132,7 @@
             // console.log(parseInt(theImage.style.width) <= offsetW + ":" + parseInt(theImage.style.height) <= offsetH)
             if(parseInt(theImage.style.width) <= offsetW || parseInt(theImage.style.height) <= offsetH) {
                 dragLock = true;
+                theImage.style.cursor = "";
                 currentOffsetX = Math.round((offsetW  - parseInt(theImage.style.width)) / 2);
                 currentOffsetY = Math.round((offsetH  - parseInt(theImage.style.height)) / 2);
                 
@@ -140,6 +141,7 @@
             }
             else {
                 dragLock = false;
+                theImage.style.cursor = "-webkit-grab";
             }
         }
 
@@ -324,6 +326,8 @@
 
             if(dragLock) return;
             
+            theImage.style.cursor = "-webkit-grabbing";
+
             startX0 = event.pageX;
             startY0 = event.pageY;
             
@@ -337,9 +341,11 @@
         
         theImage.addEventListener("mousemove", function(event) {
             if(dragLock) return;
+            
             //console.log(event.pageX + ":" + event.pageY);
             if (dragFlag) {
                 // console.log(event.pageX + ":" + event.pageY);
+                theImage.style.cursor = "-webkit-grabbing";
                 endX0 = event.pageX;
                 endY0 = event.pageY;
                 translateFromTranslatingX = endX0 - startX0;
@@ -376,11 +382,14 @@
         
         function mouseUp() {
             if(dragLock) return;
+
+
             currentOffsetX = newOffsetX;
             currentOffsetY = newOffsetY;
             
             dragFlag = false;
             // reset the transparency
+            theImage.style.cursor = "-webkit-grab";
             event.target.style.opacity = "";
         }
             

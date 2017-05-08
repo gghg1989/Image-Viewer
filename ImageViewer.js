@@ -180,12 +180,12 @@
         $("#zoomReset").bind("mousedown", function (e) {
             currentWidth = imgWidth;
             currentHeight = imgHeight;
+            theImage.style.width = currentWidth + "px";
+            theImage.style.height = currentHeight + "px";
             currentOffsetX = Math.round((offsetW  - parseInt(theImage.style.width)) / 2);
             currentOffsetY = Math.round((offsetH  - parseInt(theImage.style.height)) / 2);
             theImage.style.left = currentOffsetX + "px";
             theImage.style.top = currentOffsetY + "px";
-            theImage.style.width = currentWidth + "px";
-            theImage.style.height = currentHeight + "px";
             //this.val("100%");
         }); 
 

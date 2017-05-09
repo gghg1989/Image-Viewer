@@ -313,7 +313,6 @@
                 currentOffsetX = 0;
             }
             else if(currentOffsetX <= rightBoundary) {
-                console.log(1);
                 currentOffsetX = rightBoundary;
             }
             if(currentOffsetY >= 0) {

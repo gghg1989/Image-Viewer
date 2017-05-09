@@ -1,5 +1,5 @@
 /**
- * <h3>JQuery ImageViewer Plugin 1.3.4</h3>
+ * <h3>JQuery ImageViewer Plugin 1.3.6</h3>
  * Copyright (C) 2014-2017 Yuzhou Feng <http://eternalcat.com>
  * <br/>
  * This program is free software: you can redistribute it and/or modify
@@ -135,7 +135,7 @@
                 theImage.style.cursor = "";
                 currentOffsetX = Math.round((offsetW  - parseInt(theImage.style.width)) / 2);
                 currentOffsetY = Math.round((offsetH  - parseInt(theImage.style.height)) / 2);
-                
+
                 theImage.style.left = currentOffsetX + "px";
                 theImage.style.top = currentOffsetY + "px";
             }
@@ -297,16 +297,35 @@
             var delta = (event.originalEvent.wheelDelta < 0 || event.originalEvent.detail > 0) ? 1 : -1;
             //  var delta = e.detail < 0 || e.wheelDelta > 0 ? 1 : -1;
             var zoom = (delta < 0) ? 1.1 : 0.9;
+
+            theImage.style.width = parseInt(theImage.style.width) * zoom + "px";
+            theImage.style.height = parseInt(theImage.style.width) * sizeRatio + "px";
+            
             //  var zoom=(event.wheelDelta>0)?1.1:0.9;
             //  var zoom = (e.originalEvent.wheelDelta /120 > 0) ?1.1:0.9;
             currentOffsetX = Math.round(event.pageX - offsetX * zoom);
             currentOffsetY = Math.round(event.pageY - offsetY * zoom);
             
+            // Check image drag boundaries
+            var rightBoundary = offsetW - parseInt(theImage.style.width);
+            var bottomBoundary = offsetH - parseInt(theImage.style.height);
+            if(currentOffsetX >= 0) {
+                currentOffsetX = 0;
+            }
+            else if(currentOffsetX <= rightBoundary) {
+                console.log(1);
+                currentOffsetX = rightBoundary;
+            }
+            if(currentOffsetY >= 0) {
+                currentOffsetY = 0;
+            }
+            else if(currentOffsetY < bottomBoundary) {
+                currentOffsetY = bottomBoundary;
+            }
+
             theImage.style.left = currentOffsetX + "px";
             theImage.style.top = currentOffsetY + "px";
             
-            theImage.style.width = parseInt(theImage.style.width) * zoom + "px";
-            theImage.style.height = parseInt(theImage.style.width) * sizeRatio + "px";
             
             checkSize();
         }
@@ -352,9 +371,8 @@
                 translateFromTranslatingY = endY0 - startY0;
                 newOffsetX = currentOffsetX + translateFromTranslatingX;
                 newOffsetY = currentOffsetY + translateFromTranslatingY;
+                
                 // Check image drag boundaries
-                var rightDistance = offsetW - parseInt(theImage.style.left) - parseInt(theImage.style.width);
-                var bottomDistance = offsetH - parseInt(theImage.style.top) - parseInt(theImage.style.height);
                 var rightBoundary = offsetW - parseInt(theImage.style.width);
                 var bottomBoundary = offsetH - parseInt(theImage.style.height);
                 if(newOffsetX >= 0) {
